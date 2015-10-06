@@ -2,7 +2,7 @@ var Promise = require("bluebird");
 var http = require("http");
 var _ = require("lodash");
 
-var fields = [ "resume", "date", "hour", "division", "id", "home", "visitors", "place", "address" ];
+var fields = ["resume", "date", "hour", "division", "id", "home", "visitors", "place", "address"];
 
 function parseGames(blob) {
   var res = JSON.parse(blob);
