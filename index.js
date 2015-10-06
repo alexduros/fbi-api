@@ -1,6 +1,10 @@
 #!/usr/local/bin/node
 
 var program = require("commander");
+var _ = require("lodash");
+
+var Table = require("cli-table");
+
 var FFBBLogin = require("./login");
 var FFBBSchedule = require("./schedule");
 
@@ -31,6 +35,18 @@ program
 if (program.schedule) {
   FFBBLogin.authenticateFBI(program.login)
     .then(FFBBSchedule.listGames)
-    .then(function(games) { console.log("next games", games); })
+    .then(function(res) {
+      if (res.count <= 0) {
+        console.log('no games found.');
+        return;
+      }
+
+      var games = res.games;
+      var head = ["Date", "Heure", "Catégorie", "Numéro", "Équipe 1", "Équipe 2", "Lieu", "Adresse"];
+      var table = new Table({ head: head });
+      _.each(games, function(game) { return table.push(_.values(game)); });
+
+      console.log(table.toString());
+    })
 }
 
