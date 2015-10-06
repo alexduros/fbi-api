@@ -1,9 +1,24 @@
 var Promise = require("bluebird");
 var http = require("http");
+var _ = require("lodash");
+
+var fields = [ "resume", "date", "hour", "division", "id", "home", "visitors", "place", "address" ];
 
 function parseGames(blob) {
   var res = JSON.parse(blob);
-  return { count: res.iTotalRecords };
+  var items = res.aaData;
+  var games = _.map(items, function(game) {
+    return _.reduce(fields, function(cur, next, i) {
+      var regex = /<a href='#' onclick='return afficherDesignation\(0\)'' style='' title=''>(.*)<\/a><\/div>/ig;
+      var value = regex.exec(game[i]);
+      var nextProp = {};
+      nextProp[next] = value && value[1];
+      if (!_.isObject(cur)) { cur = {}; }
+      _.assign(cur, nextProp);
+      return cur;
+    });
+  })
+  return { count: res.iTotalRecords, games: games };
 }
 
 function listGames(options) {

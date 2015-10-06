@@ -23,6 +23,7 @@
   "homepage": "https://github.com/alexduros/referee#readme",
   "dependencies": {
     "bluebird": "^2.10.2",
-    "commander": "^2.8.1"
+    "commander": "^2.8.1",
+    "lodash": "^3.10.1"
   }
 }
