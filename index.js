@@ -24,7 +24,8 @@ function dateRange(val) {
 program
   .version("1.0.0")
   .option("-l, --login <login>:<password>",    "set FFBB extranet credentials", credentials)
-  .option("-s, --schedule <start>...<end>", "get schedule for the given start and end date")
+  // .option("-s, --schedule <start>...<end>", "get schedule for the given start and end date")
+  .option("-s, --schedule ", "get full schedule for whole year")
   .parse(process.argv);
 
 if (program.schedule) {

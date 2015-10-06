@@ -1,6 +1,10 @@
 var Promise = require("bluebird");
 var http = require("http");
 
+function parseGames(blob) {
+
+}
+
 function listGames(options) {
   var start = options.start,
       end = options.end,
