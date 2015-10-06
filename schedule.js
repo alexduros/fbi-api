@@ -2,7 +2,8 @@ var Promise = require("bluebird");
 var http = require("http");
 
 function parseGames(blob) {
-
+  var res = JSON.parse(blob);
+  return { count: res.iTotalRecords };
 }
 
 function listGames(options) {
@@ -29,7 +30,11 @@ function listGames(options) {
         body += chunk;
       });
       res.on('end', function() {
-        resolve(body);
+        try {
+          resolve(parseGames(body))
+        } catch (e) {
+          reject(e.message);
+        }
       })
 
     });
@@ -43,5 +48,6 @@ function listGames(options) {
 }
 
 module.exports = {
-  listGames
+  listGames,
+  parseGames
 };
