@@ -9,7 +9,7 @@ function parseGames(blob) {
   var items = res.aaData;
   var games = _.map(items, function(game) {
     return _.reduce(fields, function(cur, next, i) {
-      var regex = /<a href='#' onclick='return afficherDesignation\(0\)'' style='' title=''>(.*)<\/a><\/div>/ig;
+      var regex = /<a href='#' onclick='return afficherDesignation\(\d\)'' style='' title=''>(.*)<\/a><\/div>/ig;
       var value = regex.exec(game[i]);
       var nextProp = {};
       nextProp[next] = value && value[1];
