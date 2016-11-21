@@ -19,8 +19,8 @@ function credentials(val) {
 function dateRange(val) {
   var range = val.split("...");
   return {
-    start: creds[0],
-    end: creds[1]
+    start: range[0],
+    end: range[1]
   }
 }
 
@@ -28,8 +28,7 @@ function dateRange(val) {
 program
   .version("1.0.0")
   .option("-l, --login <login>:<password>",    "set FFBB extranet credentials", credentials)
-  // .option("-s, --schedule <start>...<end>", "get schedule for the given start and end date")
-  .option("-s, --schedule ", "get full schedule for whole year")
+  .option("-s, --schedule <start>...<end>", "get schedule for the given start and end date")
   .parse(process.argv);
 
 if (program.schedule) {

@@ -2,11 +2,11 @@ var Promise = require("bluebird");
 var http = require("http");
 
 function authenticateFBI(options) {
+  options = options || {};
   var login = options.login,
       password = options.password;
 
   return new Promise(function(resolve, reject) {
-
     var post = "identificationBean.identifiant=" + login + "&identificationBean.mdp=" + password + "&userName=359770414357595";
 
     var options = {

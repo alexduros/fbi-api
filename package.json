@@ -25,6 +25,7 @@
     "bluebird": "^2.10.2",
     "cli-table": "^0.3.1",
     "commander": "^2.8.1",
+    "datejs": "0.0.2",
     "lodash": "^3.10.1"
   }
 }
