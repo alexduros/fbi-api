@@ -1,13 +1,23 @@
 import assert from 'assert';
-import { createFBISession } from '../src/auth.js';
+import { createFBISession, authenticateFBISession } from '../src/auth.js';
+import { username, password } from './credentials';
 
 describe('Authentication', () => {
   describe('Create a session', () => {
     it('should creates a session on FBI website', (done) => {
-      createFBISession().then(({ cookie }) => {
-        assert(!!cookie);
+      createFBISession().then(({ sessionId }) => {
+        assert(!!sessionId);
         done();
       });
-    }).timeout('5s');
+    });
+    it('should get a redirect to home if authentication is successful', (done) => {
+      authenticateFBISession({
+        username,
+        password
+      }).then(({ sessionId }) => {
+        assert(!!sessionId);
+        done();
+      })
+    });
   })
 })

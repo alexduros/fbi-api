@@ -1,6 +1,13 @@
 var Promise = require("bluebird");
 var https = require("https");
 
+const JSESSIONID_REGEX = /(JSESSIONID=\w+)/;
+
+const getSessionFromCookie = (cookie) => {
+  const sessionIdMatch = cookie.join('').match(JSESSIONID_REGEX);
+  return sessionIdMatch ? sessionIdMatch[1] : null;
+}
+
 /**
  * Creates a JSESSIONID on FBI Application
  * Returns a Promise<String> with Cookie containing JSESSIONID
@@ -8,7 +15,7 @@ var https = require("https");
 function createFBISession() {
   return new Promise(function(resolve, reject) {
     https.get('https://extranet.ffbb.com/fbi/identification.do', function(res) {
-      resolve({ cookie: res.headers["set-cookie"] });
+      resolve({ sessionId: getSessionFromCookie(res.headers["set-cookie"]) });
     });
   })
 }
@@ -20,14 +27,14 @@ function createFBISession() {
  * authenticated user
  * Returns a Promise<String> with Cookie containing JESSIONID
  */
-function authenticateFBI(options) {
+function authenticateFBISession(options) {
   options = options || {};
-  var login = options.login,
+  var username = options.username,
       password = options.password;
 
   return new Promise(function(resolve, reject) {
-    createFBISession().then(function(cookie) {
-      var post = "identificationBean.identifiant=" + login + "&identificationBean.mdp=" + password + "&userName=359770414357595";
+    createFBISession().then(function({ sessionId }) {
+      var post = "identificationBean.identifiant=" + username + "&identificationBean.mdp=" + password + "&userName=359770414357595";
 
       var options = {
         hostname: 'extranet.ffbb.com',
@@ -36,13 +43,19 @@ function authenticateFBI(options) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': post.length
+          'Content-Length': post.length,
+          'Cookie': sessionId
         }
       };
 
+      /**
+       * If login is success
+       */
       var req = https.request(options, function(res) {
-        debugger;
-        resolve({ cookie });
+        (res.statusCode === 302 && !res.headers['set-cookie']) ? resolve({ sessionId }) : reject({
+          statusCode: res.statusCode,
+          errorMessage: 'not redirected to home after login'
+        })
       });
 
       req.on('error', function(e) {
@@ -57,5 +70,5 @@ function authenticateFBI(options) {
 
 module.exports = {
   createFBISession,
-  authenticateFBI
+  authenticateFBISession
 };
