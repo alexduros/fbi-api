@@ -1,19 +1,17 @@
 {
-  "name": "referee",
+  "name": "fbi-api",
   "version": "1.0.0",
-  "description": "simple cli for FFBB referee schedule",
+  "description": "Cleaner API for FBI",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src -d lib",
+    "test": "./node_modules/.bin/mocha --require babel-register --require babel-polyfill",
+    "test:debug": "yarn run test --inspect"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/alexduros/referee.git"
-  },
+  "repository": "git+ssh://git@github.com/alexduros/referee.git",
   "keywords": [
     "ffbb",
-    "referee",
-    "schedule"
+    "fbi"
   ],
   "author": "Alexandre Duros <alexandre.duros@gmail.com>",
   "license": "ISC",
@@ -27,5 +25,12 @@
     "commander": "^2.8.1",
     "datejs": "0.0.2",
     "lodash": "^3.10.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "mocha": "^5.2.0"
   }
 }

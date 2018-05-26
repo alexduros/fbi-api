@@ -31,6 +31,7 @@ function listGames(options) {
       cookie = options.cookie;
 
   return new Promise(function(resolve, reject) {
+    debugger;
     var options = {
       hostname: 'extranet.ffbb.com',
       port: 80,
