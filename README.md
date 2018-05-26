@@ -1,23 +1,14 @@
-# Referee Sandbox
+# FBI API
 
-It is a personnal project which gives tools for FFBB referees like me who wants to quickly know schedules or stuff...
+[![CircleCI](https://circleci.com/gh/alexduros/fbi-api/tree/master.svg?style=svg)](https://circleci.com/gh/alexduros/fbi-api/tree/master)
+
+It is a personnal project to create a cleaner javascript on the top of FBI Website.
 
 It is not linked to an offcial project, is completely personnal and may not be use massively without FFBB acknowledgement.
 
 
-# Usage
+# Examples
 
-  Usage: index [options]
-
-  Options:
-
-    -h, --help                      output usage information
-    -V, --version                   output the version number
-    -l, --login <login>:<password>  set FFBB extranet credentials
-    -s, --schedule                  get full schedule for whole year
-
-# Example
-
-- List your next games
+- In the first (and old) version, I creatied a CLI to list next games.
 
 ![schedule example](./examples/schedule_example.png)
