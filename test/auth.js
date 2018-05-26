@@ -6,7 +6,8 @@ describe('Authentication', () => {
     it('should creates a session on FBI website', (done) => {
       createFBISession().then(({ cookie }) => {
         assert(!!cookie);
+        done();
       });
-    });
+    }).timeout('5s');
   })
 })

@@ -6,15 +6,8 @@ var https = require("https");
  * Returns a Promise<String> with Cookie containing JSESSIONID
  */
 function createFBISession() {
-  var options = {
-    hostname: 'extranet.ffbb.com',
-    port: 443,
-    path: '/fbi/identification.do',
-    method: 'GET'
-  };
-
   return new Promise(function(resolve, reject) {
-    https.request(options, function(res) {
+    https.get('https://extranet.ffbb.com/fbi/identification.do', function(res) {
       resolve({ cookie: res.headers["set-cookie"] });
     });
   })
