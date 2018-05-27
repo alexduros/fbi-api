@@ -1,29 +1,46 @@
 import https from 'https';
+import {
+  compose,
+  property,
+  map,
+  zipObject,
+  tap,
+  reduce
+} from 'lodash/fp';
+import debug from './helpers/debug';
 
-var Promise = require("bluebird");
-var _ = require("lodash");
 var π = require("datejs");
-
 var DATE_FORMAT = "dd/MM/yyyy";
 
-var fields = ["resume", "date", "hour", "division", "id", "home", "visitors", "place", "address"];
+const FIELDS_TO_EXTRACT = [
+  'resume',
+  'date',
+  'hour',
+  'division',
+  'id',
+  'home',
+  'visitors',
+  'place',
+  'address'
+];
 
-function parseGames(blob) {
-  var res = JSON.parse(blob);
-  var items = res.aaData;
-  var games = _.map(items, function(game) {
-    return _.reduce(fields, function(cur, next, i) {
-      var regex = /<a href='#' onclick='return afficherDesignation\(\d+\)'' style='' title=''>(.*)<\/a><\/div>/ig;
-      var value = regex.exec(game[i]);
-      var nextProp = {};
-      nextProp[next] = value && value[1];
-      if (!_.isObject(cur)) { cur = {}; }
-      _.assign(cur, nextProp);
-      return cur;
-    });
-  })
-  return { count: res.iTotalRecords, games: games };
-}
+
+
+const FIELD_GAME_ROW_REGEX = /<a href='#' onclick='return afficherDesignation\(\d+\)'' style='' title=''>(.*)<\/a><\/div>/
+
+const createGameFromHTMLRow = compose(
+  zipObject(FIELDS_TO_EXTRACT),
+  compose(
+    map(match => match && match[1]),
+    map(row => FIELD_GAME_ROW_REGEX.exec(row)),
+  )
+);
+
+const extractGamesFromHTML = compose(
+  map(createGameFromHTMLRow),
+  property('aaData'),
+  JSON.parse
+);
 
 const getAppointmentsByDate = (sessionId) => ({ startDate, endDate }) => {
   return new Promise(function(resolve, reject) {
@@ -46,7 +63,7 @@ const getAppointmentsByDate = (sessionId) => ({ startDate, endDate }) => {
       });
       res.on('end', function() {
         try {
-          resolve(parseGames(body))
+          resolve(extractGamesFromHTML(body))
         } catch (e) {
           reject(e.message);
         }
@@ -62,6 +79,4 @@ const getAppointmentsByDate = (sessionId) => ({ startDate, endDate }) => {
   })
 }
 
-module.exports = {
-  getAppointmentsByDate,
-};
+export { getAppointmentsByDate };

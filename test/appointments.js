@@ -13,8 +13,8 @@ describe('Appointments', () => {
             startDate: '01/01/2018',
             endDate: '30/06/2018',
           }))
-        .then(({ count, games }) => {
-          assert(count > 0);
+        .then(games => {
+          assert(games.length > 0);
           done();
         });
     }).timeout('2s');
