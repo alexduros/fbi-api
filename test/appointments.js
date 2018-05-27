@@ -3,7 +3,6 @@ import { authenticateFBISession } from '../src/auth.js';
 import { getAppointmentsByDate } from '../src/appointments.js';
 import { username, password } from './credentials';
 
-
 describe('Appointments', () => {
   describe('List appointements by date', () => {
     it('should retrieve appointments given valid dates', (done) => {
@@ -18,5 +17,5 @@ describe('Appointments', () => {
           done();
         });
     }).timeout('2s');
-  })
+  });
 });
