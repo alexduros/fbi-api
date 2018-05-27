@@ -17,7 +17,7 @@ describe('Authentication', () => {
       }).then(({ sessionId }) => {
         assert(!!sessionId);
         done();
-      })
+      });
     });
-  })
-})
+  });
+});

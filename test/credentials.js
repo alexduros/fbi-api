@@ -4,4 +4,4 @@ const password = process.env.npm_config_fbi_test_password || process.env.FBI_TES
 export {
   username,
   password
-}
+};

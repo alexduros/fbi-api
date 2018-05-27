@@ -1,4 +1,5 @@
 #!/usr/local/bin/node
+/* eslint-disable */
 
 var program = require("commander");
 var _ = require("lodash");
